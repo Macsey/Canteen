@@ -33,6 +33,7 @@ class SimulationStats:
 
     time: int
     arrived_this_tick: int
+    departed_this_tick: int
     total_arrived: int
     total_finished: int
     waiting_for_seat_count: int
@@ -48,6 +49,7 @@ class SimulationStats:
         return {
             "time": self.time,
             "arrived_this_tick": self.arrived_this_tick,
+            "departed_this_tick": self.departed_this_tick,
             "total_arrived": self.total_arrived,
             "total_finished": self.total_finished,
             "waiting_for_seat_count": self.waiting_for_seat_count,
@@ -100,6 +102,10 @@ class Simulation:
         self.waiting_for_seat: Deque[Student] = deque()
         self.eating_students: List[Student] = []
 
+        # 记录实际采样时长，用于输出动态统计均值。
+        self.sampled_service_times: List[int] = []
+        self.sampled_eating_times: List[int] = []
+
     def _sample_positive_normal(self, mean: float, std: float) -> int:
         """采样正态分布并截断为正整数时长。"""
         sampled = random.gauss(mean, std)
@@ -107,34 +113,31 @@ class Simulation:
 
     def _sample_service_time(self) -> int:
         """采样一次打饭时长。"""
-        return self._sample_positive_normal(self.avg_service_time, self.std_service_time)
+        sampled = self._sample_positive_normal(self.avg_service_time, self.std_service_time)
+        self.sampled_service_times.append(sampled)
+        return sampled
 
     def _sample_eating_time(self) -> int:
         """采样一次就餐时长。"""
-        return self._sample_positive_normal(self.avg_eating_time, self.std_eating_time)
+        sampled = self._sample_positive_normal(self.avg_eating_time, self.std_eating_time)
+        self.sampled_eating_times.append(sampled)
+        return sampled
 
     def _choose_least_loaded_window(self) -> Window:
         """选择当前排队规模最小的窗口（含正在服务者）。"""
         return min(self.windows, key=lambda window: window.queue_length())
 
     def _current_arrival_rate(self, current_time: int) -> float:
-        """基于仿真进度生成更真实的分段到达率。
-
-        模型设定：
-        - 0%~30%：平峰（基准流量）
-        - 30%~65%：午间高峰
-        - 65%~100%：回落时段
-        """
+        """基于仿真进度生成先升后降的平滑到达率。"""
         if self.simulation_time <= 0:
             return self.arrival_rate
 
         progress = current_time / self.simulation_time
-        if progress < 0.30:
-            factor = 1.0
-        elif progress < 0.65:
-            factor = self.arrival_peak_factor
-        else:
-            factor = self.arrival_offpeak_factor
+        progress = min(1.0, max(0.0, progress))
+
+        # 使用半周期正弦构造“缓慢上升 -> 峰值 -> 缓慢回落”的人流趋势。
+        wave = np.sin(np.pi * progress)
+        factor = self.arrival_offpeak_factor + (self.arrival_peak_factor - self.arrival_offpeak_factor) * wave
 
         return max(0.1, self.arrival_rate * factor)
 
@@ -231,11 +234,26 @@ class Simulation:
         current_arrival_rate = self._current_arrival_rate(current_time)
         arrived_this_tick = self.generate_students(current_time, current_arrival_rate)
         self.update_windows(current_time)
+
+        finished_before = self.total_finished
         self.update_tables(current_time)
+        departed_this_tick = self.total_finished - finished_before
+
+        sampled_service_mean = (
+            sum(self.sampled_service_times) / len(self.sampled_service_times)
+            if self.sampled_service_times
+            else self.avg_service_time
+        )
+        sampled_eating_mean = (
+            sum(self.sampled_eating_times) / len(self.sampled_eating_times)
+            if self.sampled_eating_times
+            else self.avg_eating_time
+        )
 
         stats = SimulationStats(
             time=current_time,
             arrived_this_tick=arrived_this_tick,
+            departed_this_tick=departed_this_tick,
             total_arrived=self.total_arrived,
             total_finished=self.total_finished,
             waiting_for_seat_count=len(self.waiting_for_seat),
@@ -243,8 +261,8 @@ class Simulation:
             available_seats=self.table.available_count(),
             window_queue_lengths=[window.queue_length() for window in self.windows],
             current_arrival_rate=current_arrival_rate,
-            avg_service_time=self.avg_service_time,
-            avg_eating_time=self.avg_eating_time,
+            avg_service_time=sampled_service_mean,
+            avg_eating_time=sampled_eating_mean,
         )
 
         self.current_time += 1

@@ -8,7 +8,7 @@
 SIMULATION_TIME: int = 180
 
 # 食堂开放窗口数量
-WINDOW_COUNT: int = 6
+WINDOW_COUNT: int = 8
 
 # 餐桌矩阵大小（行、列）
 TABLE_ROWS: int = 12
