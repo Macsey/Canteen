@@ -1,0 +1,141 @@
+{
+  "case_name": "完整日志记录场景",
+  "input_config": {
+    "simulation_time": 5,
+    "window_count": 2,
+    "table_rows": 2,
+    "table_cols": 2,
+    "table_capacity_per_unit": 4,
+    "avg_service_time": 1,
+    "std_service_time": 0,
+    "avg_eating_time": 2,
+    "std_eating_time": 0,
+    "csv_path": "E:\\Undergraduate_2\\Code\\软件实训\\Canteen\\tests\\reports\\artifacts\\logger_case.csv"
+  },
+  "records": [
+    {
+      "time": 0,
+      "arrived_this_tick": 2,
+      "departed_this_tick": 0,
+      "total_arrived": 2,
+      "total_finished": 0,
+      "waiting_for_seat_count": 0,
+      "eating_count": 2,
+      "available_seats": 14,
+      "window_queue_lengths": [
+        0,
+        0
+      ],
+      "current_arrival_rate": 1.35,
+      "avg_service_time": 1.0,
+      "avg_eating_time": 2.0
+    },
+    {
+      "time": 1,
+      "arrived_this_tick": 1,
+      "departed_this_tick": 0,
+      "total_arrived": 3,
+      "total_finished": 0,
+      "waiting_for_seat_count": 0,
+      "eating_count": 3,
+      "available_seats": 13,
+      "window_queue_lengths": [
+        0,
+        0
+      ],
+      "current_arrival_rate": 2.091,
+      "avg_service_time": 1.0,
+      "avg_eating_time": 2.0
+    },
+    {
+      "time": 2,
+      "arrived_this_tick": 0,
+      "departed_this_tick": 2,
+      "total_arrived": 3,
+      "total_finished": 2,
+      "waiting_for_seat_count": 0,
+      "eating_count": 1,
+      "available_seats": 15,
+      "window_queue_lengths": [
+        0,
+        0
+      ],
+      "current_arrival_rate": 2.548,
+      "avg_service_time": 1.0,
+      "avg_eating_time": 2.0
+    },
+    {
+      "time": 3,
+      "arrived_this_tick": 0,
+      "departed_this_tick": 1,
+      "total_arrived": 3,
+      "total_finished": 3,
+      "waiting_for_seat_count": 0,
+      "eating_count": 0,
+      "available_seats": 16,
+      "window_queue_lengths": [
+        0,
+        0
+      ],
+      "current_arrival_rate": 2.548,
+      "avg_service_time": 1.0,
+      "avg_eating_time": 2.0
+    },
+    {
+      "time": 4,
+      "arrived_this_tick": 0,
+      "departed_this_tick": 0,
+      "total_arrived": 3,
+      "total_finished": 3,
+      "waiting_for_seat_count": 0,
+      "eating_count": 0,
+      "available_seats": 16,
+      "window_queue_lengths": [
+        0,
+        0
+      ],
+      "current_arrival_rate": 2.091,
+      "avg_service_time": 1.0,
+      "avg_eating_time": 2.0
+    }
+  ],
+  "final_state": {
+    "current_time": 5,
+    "total_arrived": 3,
+    "total_finished": 3,
+    "waiting_for_seat_count": 0,
+    "eating_count": 0,
+    "available_seats": 16,
+    "window_queue_lengths": [
+      0,
+      0
+    ],
+    "active_student_count": 3
+  },
+  "key_observations": {
+    "csv_data_rows": 5,
+    "total_entered_values": [
+      2,
+      3,
+      3,
+      3,
+      3
+    ],
+    "empty_seat_rates": [
+      0.875,
+      0.8125,
+      0.9375,
+      1.0,
+      1.0
+    ],
+    "total_queue_counts": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "pass_or_fail": true,
+  "failure_reason": ""
+}

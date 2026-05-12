@@ -1,0 +1,120 @@
+{
+  "case_name": "座位不足导致等座",
+  "input_config": {
+    "simulation_time": 4,
+    "window_count": 2,
+    "table_rows": 1,
+    "table_cols": 1,
+    "table_capacity_per_unit": 1,
+    "avg_service_time": 1,
+    "std_service_time": 0,
+    "avg_eating_time": 5,
+    "std_eating_time": 0
+  },
+  "records": [
+    {
+      "time": 0,
+      "arrived_this_tick": 3,
+      "departed_this_tick": 0,
+      "total_arrived": 3,
+      "total_finished": 0,
+      "waiting_for_seat_count": 1,
+      "eating_count": 1,
+      "available_seats": 0,
+      "window_queue_lengths": [
+        1,
+        0
+      ],
+      "current_arrival_rate": 1.35,
+      "avg_service_time": 1.0,
+      "avg_eating_time": 5.0
+    },
+    {
+      "time": 1,
+      "arrived_this_tick": 0,
+      "departed_this_tick": 0,
+      "total_arrived": 3,
+      "total_finished": 0,
+      "waiting_for_seat_count": 2,
+      "eating_count": 1,
+      "available_seats": 0,
+      "window_queue_lengths": [
+        0,
+        0
+      ],
+      "current_arrival_rate": 2.241,
+      "avg_service_time": 1.0,
+      "avg_eating_time": 5.0
+    },
+    {
+      "time": 2,
+      "arrived_this_tick": 0,
+      "departed_this_tick": 0,
+      "total_arrived": 3,
+      "total_finished": 0,
+      "waiting_for_seat_count": 2,
+      "eating_count": 1,
+      "available_seats": 0,
+      "window_queue_lengths": [
+        0,
+        0
+      ],
+      "current_arrival_rate": 2.61,
+      "avg_service_time": 1.0,
+      "avg_eating_time": 5.0
+    },
+    {
+      "time": 3,
+      "arrived_this_tick": 0,
+      "departed_this_tick": 0,
+      "total_arrived": 3,
+      "total_finished": 0,
+      "waiting_for_seat_count": 2,
+      "eating_count": 1,
+      "available_seats": 0,
+      "window_queue_lengths": [
+        0,
+        0
+      ],
+      "current_arrival_rate": 2.241,
+      "avg_service_time": 1.0,
+      "avg_eating_time": 5.0
+    }
+  ],
+  "final_state": {
+    "current_time": 4,
+    "total_arrived": 3,
+    "total_finished": 0,
+    "waiting_for_seat_count": 2,
+    "eating_count": 1,
+    "available_seats": 0,
+    "window_queue_lengths": [
+      0,
+      0
+    ],
+    "active_student_count": 3
+  },
+  "key_observations": {
+    "waiting_counts": [
+      1,
+      2,
+      2,
+      2
+    ],
+    "eating_counts": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "available_counts": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "total_capacity": 1
+  },
+  "pass_or_fail": true,
+  "failure_reason": ""
+}
